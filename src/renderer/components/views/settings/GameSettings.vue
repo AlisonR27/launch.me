@@ -8,11 +8,6 @@
         <input :class="setting.isValid ? 'valid' : 'invalid' " type="text" :name="index" @blur=verifyFolder v-model="setting.value">   
       </div>
     </div>
-    <!-- <div>
-      Insert steam path:
-    </div>
-    <input type="text" placeholder="Steam path" v-model="currentPath">
-    <button @click="loadSteam">Load</button> -->
     <ul>
       <li v-bind:key="path._id" v-for="path in paths">
         {{path.path}} | {{path._id}}
@@ -23,10 +18,10 @@
 
 <script>
 import {default as readGames} from '../../../../service/loaders/games/steam/steamFolders'
-import { getAll } from '../../../../service/database/pathDB.js'
+import { getAll, save } from '../../../../service/database/pathDB.js'
 import { default as updateGames } from '../../../../service/loaders/games/steam/games'
 import { verifyFolder } from '../../../../service/general/paths/paths'
-// import { default as updateEpic } from '../../../../service/loaders/games/epic/games'
+import { readManifests as updateEpic } from '../../../../service/loaders/games/epic/games'
 
 export default {
   data () {
@@ -52,37 +47,42 @@ export default {
     getAll().then((docs) => {
       this.paths = docs
     })
-    for (var setting in this.settings) {
-      if (setting.constructor.name.substring('Path') !== -1) {
-        if (this.checkFolder(setting.value)) {
-          setting.isValid = true
-        } else {
-          setting.isValid = false
-        }
+    Object.entries(this.settings).forEach(setting => {
+      if (setting[0].substring('Path') !== -1) {
+        verifyFolder(setting[1].value).then(response => {
+          if (response === 200) {
+            this.settings[setting[0]].isValid = true
+          } else {
+            this.settings[setting[0]].isValid = false
+          }
+        })
       }
-    }
+    })
   },
   methods: {
     verifyFolder: function (e) {
-      console.log(e)
       if (e.target.name.substring('Path') !== -1) {
-        this.settings[e.target.name].fn()
+        this.settings[e.target.name].fn(e)
       }
     },
-    loadSteam: function () {
+    loadSteam: function (e) {
+      this.checkFolder(e)
       readGames(this.currentPath)
       updateGames()
     },
-    loadEpic: function () {
-      console.log('loadEpic')
+    loadEpic: function (e) {
+      this.checkFolder(e)
+      if (this.settings[e.target.name].isValid) save({ role: 'root', platform: 'Epic', path: e.target.value })
+      updateEpic()
     },
-    checkFolder: function (path) {
-      verifyFolder(path).then(response => {
+    checkFolder: function (e) {
+      verifyFolder(e.target.value).then(response => {
         if (response === 200) {
-          return true
-        } else {
-          return false
+          this.settings[e.target.name].isValid = true
         }
+      }).catch(err => {
+        console.log(err)
+        this.settings[e.target.name].isValid = false
       })
     }
   },

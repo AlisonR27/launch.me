@@ -18,7 +18,7 @@ const readingLibraryFunction = function () {
     if (aPath) {
       const path = {
         path: aPath[2].replace(/\\\\/g, '/'),
-        source: 'Steam',
+        platform: 'Steam',
         role: 'game'
       }
       savePath(path)

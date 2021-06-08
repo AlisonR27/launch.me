@@ -5,7 +5,7 @@ import { save as SaveGame } from '../../../database/gameDB'
 const gameInfos = ['appid', 'name', 'SizeOnDisk', 'LastUpdated', 'platform', 'lastPlayed']
 
 export default function updateGames () {
-  getPath({ source: 'Steam' }).then(paths => {
+  getPath({ source: 'Steam', role: 'game' }).then(paths => {
     try {
       paths.forEach(pathObj => {
         const folderScan = readdirSync(pathObj.path + '/steamapps/')
