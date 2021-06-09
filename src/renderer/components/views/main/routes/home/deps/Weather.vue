@@ -1,5 +1,7 @@
 <template>
-  
+  <div>
+    26°C
+  </div>
 </template>
 
 <script>

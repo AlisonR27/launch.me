@@ -6,9 +6,16 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/home',
+      path: '/main',
       name: 'landing-page',
-      component: require('@/components/views/home/Home').default
+      component: require('@/components/views/main/Launchme').default,
+      children: [
+        {
+          name: 'Home',
+          path:'/home',
+          component: require('@/components/views/main/routes/home/Home')
+        }
+      ]
     },
     {
       path: '/settings',

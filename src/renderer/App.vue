@@ -1,13 +1,19 @@
 <template>
   <div id="app">
+    <navbar />
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'launchme'
+import navbar from './components/navigation/navbar/navbar.vue'
+
+export default {
+  name: 'launchme',
+  components: {
+    navbar
   }
+}
 </script>
 
 <style>

@@ -10,7 +10,6 @@ function save (game) {
   get({name: game.name}).then(docs => {
     console.log(docs)
     if (docs.length < 1) {
-      console.log(game)
       return new Promise((resolve, reject) => {
         connection.insert(game, function (err, newDoc) {
           if (err) reject(err)
