@@ -1,12 +1,16 @@
 <template>
-  <nav>
+  <nav class="navbar">
     <div class=""> </div>
-    <div class="">
-      <a :href="item.path" :key="i" v-for="(item,i) in routes">
+    <div class="navbar-nav">
+      <router-link class="nav-link" :class="$route.name == item.name ? 'active' : ''" :to="item.name" :key="i" v-for="(item,i) in routes">
         {{item.name}}
-      </a>  
+      </router-link>  
     </div>
-    <div class=""> </div>
+    <div class="">
+      <router-link to="Settings">
+        Settings
+      </router-link>
+    </div>
   </nav>
 </template>
 
@@ -18,19 +22,44 @@ export default {
     }
   },
   mounted () {
-    this.$router.options.routes.forEach(route => {
-      this.routes.push({
-        name: route.name,
-        path: route.path
+    this.$router.options.routes.filter(item => item.name === 'Land').forEach(route => {
+      route.children.forEach(item => {
+        this.routes.push({
+          name: item.name,
+          path: item.path
+        })
       })
     })
   },
   methods: {
-
   }
 }
 </script>
 
 <style>
+.navbar {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 20px 0;
+  width: 100%;
 
+  position: absolute;
+}
+.navbar.show {
+  top:0;
+}
+.navbar:not(.show){
+  top:-6em;
+}
+.nav-link {
+  text-decoration: none;
+  padding:10px 20px;
+}
+.nav-link:not(:first-of-type){
+  margin-left:5px;
+}
+.nav-link:hover, .nav-link.active {
+  border-bottom: 2px solid white;
+}
 </style>

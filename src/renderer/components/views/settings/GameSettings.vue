@@ -67,13 +67,17 @@ export default {
     },
     loadSteam: function (e) {
       this.checkFolder(e)
-      readGames(this.currentPath)
+      readGames(e.target.value)
       updateGames()
     },
     loadEpic: function (e) {
       this.checkFolder(e)
       if (this.settings[e.target.name].isValid) save({ role: 'root', platform: 'Epic', path: e.target.value })
-      updateEpic()
+      try {
+        updateEpic()
+      } catch (exc) {
+        console.log(exc)
+      }
     },
     checkFolder: function (e) {
       verifyFolder(e.target.value).then(response => {

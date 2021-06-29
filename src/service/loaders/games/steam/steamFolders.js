@@ -45,8 +45,8 @@ function recursiveAsyncReadLine (path) {
   }
 }
 
-const readGames = path => {
-  recursiveAsyncReadLine(path)
+const readGames = (pathx) => {
+  recursiveAsyncReadLine(pathx)
 }
 
 export default readGames

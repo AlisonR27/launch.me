@@ -1,6 +1,8 @@
 import { get as getPath } from '../../../database/pathDB.js'
-import { save as SaveGame } from '../../../database/gameDB'
+import { get } from '../../../database/gameDB'
+import { processGame as SaveGame } from '../../igdb/consume-api'
 import { readdirSync, readFileSync } from 'fs'
+import { ExistingGameException } from '../../../general/exceptions/exceptions.js'
 var path = require('path')
 
 export function readManifests () {
@@ -11,13 +13,17 @@ export function readManifests () {
       if (file.endsWith('.item')) {
         let game = {}
         let epicManifest = JSON.parse(readFileSync(path.resolve(manifestAbsPath + '/' + file)))
-        game.appid = null
-        game.name = epicManifest['DisplayName']
-        game.sizeondisk = epicManifest['InstallSize']
-        game.lastupdated = null
-        game.platform = 'Epic'
-        game.lastPlayed = 0
-        SaveGame(game)
+        const gameName = epicManifest['DisplayName'].replace(/[^\w\s]/gi, '')
+        const gamePlatform = 'Epic'
+        get({name: gameName}).then(response => {
+          if (response.length > 0) {
+            throw new ExistingGameException(gameName + ' is Already at your database')
+          } else {
+            game.name = gameName
+            game.platform = gamePlatform
+            SaveGame(gameName, game)
+          }
+        })
       }
     })
   }).catch(exc => {

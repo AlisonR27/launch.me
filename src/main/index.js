@@ -22,14 +22,18 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     height: 563,
     useContentSize: true,
-    width: 1000
+    width: 1000,
+    webPreferences: {
+      webSecurity: false
+    }
   })
-
   mainWindow.loadURL(winURL)
 
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+
+  require('vue-devtools').install()
 }
 
 app.on('ready', createWindow)
