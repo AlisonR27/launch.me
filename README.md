@@ -1,25 +1,12 @@
-# launchme
+# Launchme
+## _Getting up of the sofa is no longer needed_
 
-> An electron-vue project
+Launch.me is a game launcher with the objective of simply gathering all the games in your PC, with a simple interface and interactions with each game stores.
 
-#### Build Setup
+The launch.me was created with the purpose of learning Electron.JS and Vue, two incredible JS frameworks. Such code is not intended to be fully optimized or have the best coding and versioning practices. 
 
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:9080
-npm run dev
-
-# build electron application for production
-npm run build
-
-
-# lint all JS/Vue component files in `src/`
-npm run lint
-
+You can clone the project and run it locally, with Node.JS:
 ```
-
----
-
-This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue)@[8d4ed60](https://github.com/SimulatedGREG/electron-vue/tree/8d4ed607d65300381a8f47d97923eb07832b1a9a) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
+npm install
+npm run dev
+```
